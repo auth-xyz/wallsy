@@ -18,3 +18,20 @@ here's a url for wpaperd:
 https://github.com/danyspin97/wpaperd
 and one for ffmpeg:
 https://ffmpeg.org/
+
+Usage:
+  wallsy [VIDEO] [OPTIONS]
+
+Flags:
+  :help, :h         : Display this help message (default: false)
+
+Arguments:
+  :fps, :f          : Set the FPS of the GIF (optional)
+  :resolution, :r   : Set the resolution of the GIF (WIDTHxHEIGHT) (optional)
+  :input, :i        : The GIF to set as wallpaper (required)
+
+
+ex:
+wallsy \
+   :input video.mp4 \ 
+   :fps 60 

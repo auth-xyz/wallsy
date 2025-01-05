@@ -7,7 +7,7 @@
 const std::string defaultResolution = "1920x1080";
 
 int main(int argc, char *argv[]) {
-  clicky cli("{program} [GIF] [OPTIONS]");
+  clicky cli("{program} [VIDEO] [OPTIONS]");
   wallsy wallsy;
 
   cli.set_prefix({":"}, {":"});
@@ -17,11 +17,6 @@ int main(int argc, char *argv[]) {
       {"resolution", "r", false,
        "Set the resolution of the GIF (WIDTHxHEIGHT)"},
       {"fps", "f", false, "Set the FPS of the GIF"},
-  });
-
-  cli.add_flags({
-      {"loop", "l", false, "Loop the GIF as wallpaper"},
-      {"startup", "s", false, "Set the wallpaper on startup"},
   });
 
   try {
@@ -47,10 +42,6 @@ int main(int argc, char *argv[]) {
     if (cli.has_argument("fps")) {
       int fps = std::stoi(cli.argument("fps"));
       wallsy.setFPS(fps);
-    }
-
-    if (cli.flag("loop")) {
-      wallsy.setLoop();
     }
 
     wallsy.startWallpaperLoop(input);

@@ -9,5 +9,10 @@ all: $(src)
 
 clean:
 	rm -f wallsy
+	rm -f /usr/local/bin/wallsy
+
+install:
+	sudo cp wallsy /usr/local/bin
+
 
 .PHONY: all clean
