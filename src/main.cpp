@@ -17,8 +17,6 @@ int main(int argc, char *argv[]) {
       {"resolution", "r", false,
        "Set the resolution of the GIF (WIDTHxHEIGHT)"},
       {"fps", "f", false, "Set the FPS of the GIF"},
-      {"method", "m", false,
-       "Set the wallpaper method (fill, stretch, tile, center)"},
   });
 
   cli.add_flags({
@@ -49,10 +47,6 @@ int main(int argc, char *argv[]) {
     if (cli.has_argument("fps")) {
       int fps = std::stoi(cli.argument("fps"));
       wallsy.setFPS(fps);
-    }
-
-    if (cli.has_argument("method")) {
-      wallsy.setMethod(cli.argument("method"));
     }
 
     if (cli.flag("loop")) {

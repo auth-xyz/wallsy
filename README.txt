@@ -2,7 +2,7 @@
 
 So, I'm going to write a proper and prettier readme later, but for now, it'll do.
 
-wallsy is, essentially, a wallpaper engine for linux systems, as the description reads
+wallsy is a *very* simplified version of WPE (wallpaper engine), as the description reads,
 but it's a bit more than that. Essentially, using ffmpeg, it'll convert any video format
 that ffmpeg supports, into a bunch of frames, and using wpaperd, loop through those frames
 giving the illusion of an animated background. From my tests on a decade old laptop, it
