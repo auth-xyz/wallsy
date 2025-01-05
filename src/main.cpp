@@ -1,25 +1,70 @@
 #include <clicky/clicky.hpp>
 #include <cstdlib>
+#include <iostream>
 
+#include "../include/wallsy.hpp"
 
-#include "../libs/image.hpp"
+const std::string defaultResolution = "1920x1080";
 
-int main(int argc, char* argv[]) 
-{
+int main(int argc, char *argv[]) {
   clicky cli("{program} [GIF] [OPTIONS]");
+  wallsy wallsy;
+
   cli.set_prefix({":"}, {":"});
-  cli.add_argument("input", "i", false, "the gif to set as wallpaper");
+  cli.add_argument("input", "i", true, "The GIF to set as wallpaper");
 
   cli.add_arguments({
-    {"downsize", "d", false, "Downsizes the resolution of the gif"},
+      {"resolution", "r", false,
+       "Set the resolution of the GIF (WIDTHxHEIGHT)"},
+      {"fps", "f", false, "Set the FPS of the GIF"},
+      {"method", "m", false,
+       "Set the wallpaper method (fill, stretch, tile, center)"},
   });
 
   cli.add_flags({
-    {"loop", "l", false, "Loops the gif"},
-    {"startup", "s", false, "Sets the wallpaper on startup"},
+      {"loop", "l", false, "Loop the GIF as wallpaper"},
+      {"startup", "s", false, "Set the wallpaper on startup"},
   });
 
-  cli.parse(argc,argv);
+  try {
+    cli.parse(argc, argv);
+
+    std::string input = cli.argument("input");
+    if (!wallsy.validateInput(input)) {
+      throw std::runtime_error("Invalid input file: " + input);
+    }
+
+    if (cli.has_argument("resolution")) {
+      auto resolution = cli.argument("resolution");
+      wallsy.setResolution(
+          std::stoi(resolution.substr(0, resolution.find("x"))),
+          std::stoi(resolution.substr(resolution.find("x") + 1)));
+
+    } else {
+      wallsy.setResolution(
+          std::stoi(defaultResolution.substr(0, defaultResolution.find("x"))),
+          std::stoi(defaultResolution.substr(defaultResolution.find("x") + 1)));
+    }
+
+    if (cli.has_argument("fps")) {
+      int fps = std::stoi(cli.argument("fps"));
+      wallsy.setFPS(fps);
+    }
+
+    if (cli.has_argument("method")) {
+      wallsy.setMethod(cli.argument("method"));
+    }
+
+    if (cli.flag("loop")) {
+      wallsy.setLoop();
+    }
+
+    wallsy.startWallpaperLoop(input);
+  } catch (const std::exception &e) {
+    std::cerr << "Error: " << e.what() << '\n';
+    cli.print_help();
+    return EXIT_FAILURE;
+  }
 
   return EXIT_SUCCESS;
 }
