@@ -1,5 +1,4 @@
 #include "../include/wallsy.hpp"
-#include <algorithm>
 #include <chrono>
 #include <cstdlib>
 #include <filesystem>
@@ -115,7 +114,8 @@ void ffmpeg::process(const std::string &path, const std::string &output, int fra
 
 void ffmpeg::convert(const std::string &path, const std::string &output) {
   std::filesystem::create_directory(output);
-  std::string cmd = "ffmpeg -i " + path + " " + output + "/frame_%04d.png >/dev/null 2>&1";
+  std::string cmd = "ffmpeg -i " + path + " " + output + "/frame_%04d.png >ffmpeg.log 2>&1";
+
   if (std::system(cmd.c_str()) != 0) {
     std::cerr << "Error: FFmpeg conversion failed." << std::endl;
   } else {

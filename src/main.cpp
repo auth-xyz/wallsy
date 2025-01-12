@@ -11,24 +11,27 @@ int main(int argc, char *argv[]) {
   wallsy wallsy;
 
   cli.set_prefix({":"}, {":"});
-  cli.add_argument("input", "i", true, "The GIF to set as wallpaper");
+  cli.add_argument("input", "i",  "The GIF to set as wallpaper", true);
 
   cli.add_arguments({
-      {"resolution", "r", false,
-       "Set the resolution of the GIF (WIDTHxHEIGHT)"},
-      {"fps", "f", false, "Set the FPS of the GIF"},
+    {"resolution", "r",
+      "Set the resolution of the GIF (WIDTHxHEIGHT)", false},
+    {"fps", "f", "Set the FPS of the GIF", false},
   });
 
   try {
     cli.parse(argc, argv);
+    std::string input;
 
-    std::string input = cli.argument("input");
-    if (!wallsy.validateInput(input)) {
-      throw std::runtime_error("Invalid input file: " + input);
+    if (cli.has_argument("input")) {
+      input = cli.get_argument("input");
+      if (!wallsy.validateInput(input)) {
+        throw std::runtime_error("Invalid input file: " + input);
+      }
     }
 
     if (cli.has_argument("resolution")) {
-      auto resolution = cli.argument("resolution");
+      auto resolution = cli.get_argument("resolution");
       wallsy.setResolution(
           std::stoi(resolution.substr(0, resolution.find("x"))),
           std::stoi(resolution.substr(resolution.find("x") + 1)));
@@ -40,7 +43,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (cli.has_argument("fps")) {
-      int fps = std::stoi(cli.argument("fps"));
+      int fps = std::stoi(cli.get_argument("fps"));
       wallsy.setFPS(fps);
     }
 
